@@ -388,7 +388,7 @@ class SurrealDefaultLauncher(Launcher):
         tensorplex_config = self.session_config.tensorplex
         cmd = ['tensorboard',
                '--logdir', folder,
-               '--port', str(tensorplex_config.tensorboard_port)]
+               '--port', str(tensorplex_config.tensorboard_port), '--purge_orphaned_data=False']
         subprocess.call(cmd)
 
     def run_tensorplex(self):

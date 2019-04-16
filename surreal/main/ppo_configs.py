@@ -43,7 +43,7 @@ PPO_DEFAULT_LEARNER_CONFIG = Config({
                 'lr_scheduler': "LinearWithMinLR",
                 'frames_to_anneal': 5e6,
                 'lr_update_frequency': 100,
-                'min_lr': 5e-5,
+                'min_lr': 1e-4,
             },
         },
 
@@ -51,7 +51,7 @@ PPO_DEFAULT_LEARNER_CONFIG = Config({
         'ppo_mode': 'adapt',
         'advantage':{
             'norm_adv': True,
-            'lam': 0.97,
+            'lam': 1.0, #0.97,
             'reward_scale': 1.0,
         },
         'rnn': {
@@ -62,14 +62,14 @@ PPO_DEFAULT_LEARNER_CONFIG = Config({
         },
         'consts': {
             'init_log_sig': -1.0,
-            'log_sig_range': 0.25,
+            'log_sig_range': 0, #0.25,
             'epoch_policy': 10,
             'epoch_baseline': 10,
             'adjust_threshold': (0.5, 2.0),  # threshold to magnify clip epsilon
-            'kl_target': 0.015,  # target KL divergence between before and after
+            'kl_target': 0.02, #0.015,   # target KL divergence between before and after
         },
         'adapt_consts': {
-            'kl_cutoff_coeff': 250,  # penalty coeff when kl large
+            'kl_cutoff_coeff': 500,   # penalty coeff when kl large
             'beta_init': 1.0,  # original beta
             'beta_range': (1/35.0, 35.0),  # range of the adapted penalty factor
             'scale_constant': 1.5,
@@ -95,11 +95,14 @@ PPO_DEFAULT_LEARNER_CONFIG = Config({
 PPO_DEFAULT_LEARNER_CONFIG.extend(BASE_LEARNER_CONFIG)
 
 PPO_DEFAULT_ENV_CONFIG = Config({
-    'env_name': '',
+    'env_name': 'robosuite:SawyerLift',
     'action_repeat': 1,
     'pixel_input': False,
     'use_grayscale': False,
     'use_depth': False,
+
+    'render': False,
+    
     'frame_stacks': 1,
     'sleep_time': 0,
     'video': {

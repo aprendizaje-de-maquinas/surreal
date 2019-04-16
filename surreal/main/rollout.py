@@ -79,6 +79,7 @@ if __name__ == "__main__":
     env_config.video.record_every = record_every
     env_config.video.save_folder = record_folder
     env_config.eval_mode.render = render
+    env_config.render = render
 
     # restore the agent
     agent = restore_agent(algo, learner_config, env_config, session_config, render)

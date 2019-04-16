@@ -228,6 +228,23 @@ class Agent(object, metaclass=U.AutoInitializeMeta):
             @env: the environment to run agent on
         """
         self.main_setup()
+
+        if 'eval' in self.agent_mode:
+            env2 = self.get_env()
+            def thunk():
+                import mujoco_py
+                env = self.env
+                viewer = mujoco_py.MjViewer(env2.unwrapped._sim)
+
+                while True:
+                    env2.unwrapped._sim.set_state(env.unwrapped._sim.get_state())
+                    env2.unwrapped._sim.step()
+                    viewer.render()
+
+            import threading
+            t = threading.Thread(target=thunk)
+            t.start()
+
         while True:
             self.main_loop()
 
@@ -274,7 +291,7 @@ class Agent(object, metaclass=U.AutoInitializeMeta):
         """
         Returns a subclass of EnvBase, created from self.env_config
         """
-        if self.agent_mode in ['eval_deterministic', 'eval_stochastic']:
+        if self.agent_mode in ['eval_deterministic', 'eval_stochastic', 'eval_deterministic_local', 'eval_stochastic_local']:
             env, _ = make_env(self.env_config, mode='eval')
         else:
             env, _ = make_env(self.env_config)

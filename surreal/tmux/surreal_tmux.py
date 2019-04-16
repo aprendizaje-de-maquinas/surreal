@@ -119,7 +119,7 @@ class TurrealParser(SymphonyParser):
         experiment_name = self._process_experiment_name(args.experiment_name)
         exp = cluster.new_experiment(
             experiment_name,
-            preamble_cmds=self.config.tmux_preamble_cmds)
+            preamble_cmds=[])
 
         algorithm_args = args.remainder
         algorithm_args += [
