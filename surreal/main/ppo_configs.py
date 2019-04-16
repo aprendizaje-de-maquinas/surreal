@@ -136,6 +136,7 @@ PPO_DEFAULT_ENV_CONFIG = Config({
     },
     'limit_episode_length': 200,
     'stochastic_eval': True,
+    'display_eval': False,
 })
 PPO_DEFAULT_ENV_CONFIG.extend(BASE_ENV_CONFIG)
 

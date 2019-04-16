@@ -114,7 +114,11 @@ class SurrealDefaultLauncher(Launcher):
         self.env_config = env_config
         self.learner_config = learner_config
 
-        self.eval_mode = eval_mode
+        if self.env_config.display_eval:
+            self.eval_mode = 'eval_display'
+        else:
+            self.eval_mode = eval_mode
+
         self.render = render
         self.agent_batch_size = agent_batch_size
         self.eval_batch_size = eval_batch_size

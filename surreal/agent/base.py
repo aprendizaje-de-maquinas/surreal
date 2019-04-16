@@ -18,7 +18,7 @@ from surreal.env import (
 )
 
 AGENT_MODES = ['training', 'eval_deterministic', 'eval_stochastic', 
-    'eval_deterministic_local', 'eval_stochastic_local']
+               'eval_deterministic_local', 'eval_stochastic_local', 'eval_display']
 
 
 class Agent(object, metaclass=U.AutoInitializeMeta):
@@ -50,6 +50,11 @@ class Agent(object, metaclass=U.AutoInitializeMeta):
         if self.agent_mode not in ['eval_deterministic_local', 'eval_stochastic_local']:
             self._setup_parameter_pull()
             self._setup_logging()
+
+        if self.agent_mode == 'eval_display':
+            self.display = True
+        else:
+            self.display = False
 
         self.current_episode = 0
         self.cumulative_steps = 0
@@ -229,16 +234,16 @@ class Agent(object, metaclass=U.AutoInitializeMeta):
         """
         self.main_setup()
 
-        if 'eval' in self.agent_mode:
+        if 'eval' in self.agent_mode and self.display:
             env2 = self.get_env()
             def thunk():
                 import mujoco_py
                 env = self.env
-                viewer = mujoco_py.MjViewer(env2.unwrapped._sim)
+                viewer = mujoco_py.MjViewer(env2.unwrapped.sim)
 
                 while True:
-                    env2.unwrapped._sim.set_state(env.unwrapped._sim.get_state())
-                    env2.unwrapped._sim.step()
+                    env2.unwrapped.sim.set_state(env.unwrapped.sim.get_state())
+                    env2.unwrapped.sim.step()
                     viewer.render()
 
             import threading
