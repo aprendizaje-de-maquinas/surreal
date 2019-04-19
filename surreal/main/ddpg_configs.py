@@ -138,6 +138,7 @@ DDPG_DEFAULT_ENV_CONFIG = Config({
         # named 'flat_inputs'
         'low_dim':['position', 'velocity', 'proprio', 'robot-state', 'cube_pos', 'cube_quat', 'gripper_to_cube', 'low-dim'],
     },
+    'display_eval': False,
 })
 
 DDPG_DEFAULT_ENV_CONFIG.extend(BASE_ENV_CONFIG)
