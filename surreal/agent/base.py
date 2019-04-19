@@ -239,11 +239,26 @@ class Agent(object, metaclass=U.AutoInitializeMeta):
             def thunk():
                 import mujoco_py
                 env = self.env
-                viewer = mujoco_py.MjViewer(env2.unwrapped.sim)
+
+                try:
+                    _ = env2.unwrapped.sim
+                    protected_sim = False
+                except:
+                    protected_sim = True
+
+                if protected_sim:
+                    viewer = mujoco_py.MjViewer(env2.unwrapped._sim)
+                else:
+                    viewer = mujoco_py.MjViewer(env2.unwrapped.sim)
 
                 while True:
-                    env2.unwrapped.sim.set_state(env.unwrapped.sim.get_state())
-                    env2.unwrapped.sim.step()
+
+                    if protected_sim:
+                        env2.unwrapped._sim.set_state(env.unwrapped._sim.get_state())
+                        env2.unwrapped._sim.step()
+                    else:
+                        env2.unwrapped.sim.set_state(env.unwrapped.sim.get_state())
+                        env2.unwrapped.sim.step()
                     viewer.render()
 
             import threading
