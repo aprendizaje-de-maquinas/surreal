@@ -9,7 +9,7 @@ from benedict import BeneDict
 from pkg_resources import parse_version
 from collections import OrderedDict
 from contextlib import contextmanager
-from . import filesys as U
+from surreal.utils import filesys as U
 
 
 CHEKCPOINT_VERSION = '0.0.1'
